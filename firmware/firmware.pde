@@ -15,8 +15,8 @@ const int INTERRUPT_NUMBER = 0;
 enum {NUM_COUNTER_BITS=8};
 const int COUNTER_OUTPUT_PINS[NUM_COUNTER_BITS] = {5,6,7,8,9,10,11,12};
 
-const unsigned long MAX_PERIOD = 500000; 
-const unsigned long PULSE_HIGH_FRAC = 10;
+const unsigned long MAX_PERIOD = 40000; 
+const unsigned long PULSE_HIGH_FRAC = 3;
 
 // Global variables
 bool pulseHigh = false;
@@ -126,12 +126,14 @@ void setCounterOutputBits(unsigned short count) {
     }
     else {
         for (int i=0; i<NUM_COUNTER_BITS; i++) {
-            if ( i <= (count%NUM_COUNTER_BITS) ) {
+            if ( i < count%(NUM_COUNTER_BITS+1) ) {
+                //Serial << COUNTER_OUTPUT_PINS[i] << " hi" << endl;
                 digitalWrite(COUNTER_OUTPUT_PINS[i], HIGH);
             }
             else {
-                digitalWrite(COUNTER_OUTPUT_PINS[i], LOW);
-            }
+                //Serial << COUNTER_OUTPUT_PINS[i] << " lo" << endl;
+                digitalWrite(COUNTER_OUTPUT_PINS[i], LOW); 
+            } 
         }
     }
 }
