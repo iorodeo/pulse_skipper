@@ -8,8 +8,9 @@ class PulseSkipperSerial(serial.Serial):
         super(PulseSkipperSerial,self).__init__(port=port,baudrate=9600,timeout=5.0)
         time.sleep(2.0)
 
-    def skipPulse(self):
-        self.write('s')
+    def skipPulse(self,n):
+        assert (n>=1 and n<=9), 'pulse number must be in range [1,9]'
+        self.write('{0}'.format(n))
 
     def resetCount(self):
         self.write('r')

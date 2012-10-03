@@ -20,7 +20,7 @@ const unsigned long PULSE_HIGH_FRAC = 3;
 
 // Global variables
 bool pulseHigh = false;
-bool skipPulse = false;
+unsigned int skipPulse = 0;
 unsigned long pulseCount = 0;
 unsigned long pulseTime = 0;
 unsigned long pulseTimeLast = 0;
@@ -54,10 +54,18 @@ void loop() {
         cmd = Serial.read();
         switch (cmd) {
 
-            case 's':
-                // Skip a pulse
+            // Skip a upto 9 pulses - this is super cheesey
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
                 ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-                    skipPulse = true;
+                    skipPulse = ((unsigned int)cmd) - 48;
                 }
                 break;
 
@@ -127,11 +135,9 @@ void setCounterOutputBits(unsigned short count) {
     else {
         for (int i=0; i<NUM_COUNTER_BITS; i++) {
             if ( i < count%(NUM_COUNTER_BITS+1) ) {
-                //Serial << COUNTER_OUTPUT_PINS[i] << " hi" << endl;
                 digitalWrite(COUNTER_OUTPUT_PINS[i], HIGH);
             }
             else {
-                //Serial << COUNTER_OUTPUT_PINS[i] << " lo" << endl;
                 digitalWrite(COUNTER_OUTPUT_PINS[i], LOW); 
             } 
         }
@@ -139,8 +145,8 @@ void setCounterOutputBits(unsigned short count) {
 }
 
 void onPulseInterrupt() {
-    if (skipPulse) {
-        skipPulse = false;
+    if (skipPulse>0) {
+        skipPulse -= 1;
     }
     else {
         digitalWrite(PULSE_OUTPUT_PIN, HIGH);

@@ -68,7 +68,8 @@ class PulseSkipper(QtGui.QMainWindow, Ui_MainWindow):
 
 
     def skipClicked(self):
-        self.dev.skipPulse()
+        skipValue = self.skipSpinBox.value()
+        self.dev.skipPulse(skipValue)
 
     def resetClicked(self):
         self.dev.resetCount()
