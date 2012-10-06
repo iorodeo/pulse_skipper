@@ -2,4 +2,16 @@ syntax: glob
 *.pyc
 *~
 *.o
+*.egg-info
 *.swp
+*.scad
+*.stl
+*.pkl
+*.dxf
+*.komodo*
+*.egg-info
+.DS_Store
+python/PulseSkipper/build
+python/PulseSkipper/dist
+.komodo*
+deb_dist
