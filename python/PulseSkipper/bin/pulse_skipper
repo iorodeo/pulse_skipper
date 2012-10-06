@@ -1,0 +1,2 @@
+from pulse_skipper import pulse_skipper_app
+pulse_skipper_app.runApp()
