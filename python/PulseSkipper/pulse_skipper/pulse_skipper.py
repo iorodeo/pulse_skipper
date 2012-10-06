@@ -10,7 +10,7 @@ from pulse_skipper_serial import PulseSkipperSerial
 
 class PulseSkipper(QtGui.QMainWindow, Ui_MainWindow):
 
-    DEFAULT_PORT = '/dev/ttyUSB8'
+    DEFAULT_PORT = '/dev/pulse-skipper'
 
     def __init__(self, parent=None):
         super(PulseSkipper,self).__init__(parent)
@@ -30,6 +30,7 @@ class PulseSkipper(QtGui.QMainWindow, Ui_MainWindow):
         self.numberRadioButton.toggled.connect(numberToggledCallback)
         binaryToggledCallback = functools.partial(self.displayToggled,'binary')
         self.binaryRadioButton.toggled.connect(binaryToggledCallback)
+        self.portLineEdit.editingFinished.connect(self.portChanged)
 
     def initialize(self):
         self.dev = None
@@ -39,6 +40,9 @@ class PulseSkipper(QtGui.QMainWindow, Ui_MainWindow):
         self.numberRadioButton.setChecked(True)
         self.binaryRadioButton.setChecked(False)
 
+    def portChanged(self):
+        self.port = str(self.portLineEdit.text())
+        print(self.port)
 
     def connectPressed(self):
         self.portLineEdit.setEnabled(False)
